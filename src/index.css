@@ -11,6 +11,10 @@ body {
 .navbar-light .navbar-brand {
   color: #ffffff !important;
 }
+.category-aktif{
+  background-color: #22668a;
+  color: #ffffff;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
