@@ -15,6 +15,12 @@ body {
   background-color: #22668a;
   color: #ffffff;
 }
+.btn-primary{
+  background-color: #22668a;
+}
+.navbar-nav .nav-link{
+  color: #ffffff !important;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

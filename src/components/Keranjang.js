@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Badge, Col, ListGroup, Row } from "react-bootstrap";
+import TotalBayar from "./TotalBayar";
 
 export default class Keranjang extends Component {
   render() {
@@ -13,7 +14,7 @@ export default class Keranjang extends Component {
         {keranjangs.map !== 0 && (
           <ListGroup variant="flush">
             {keranjangs.map((menuKeranjang) =>(
-            <ListGroup.Item>
+            <ListGroup.Item key={menuKeranjang.id}>
               <Row>
                 <Col xs={2}>
                 <h4>
@@ -34,6 +35,7 @@ export default class Keranjang extends Component {
             ))}
           </ListGroup>
         )}
+        <TotalBayar keranjangs={keranjangs} {...this.props}/>
       </Col>
     );
   }
