@@ -13,22 +13,7 @@ export default class TotalBayar extends Component {
       menus: this.props.keranjangs,
     };
     axios.post(API_URL + "/pesanans", pesanan).then((res) => {
-      Swal.fire({
-        title: 'Mantep!',
-        text: 'Transaksi Berhasil.',
-        imageUrl: 'assets/images/success.png',
-        imageWidth: 400,
-        imageHeight: 300,
-        imageAlt: 'Custom image',
-      })
-      axios.get(API_URL + "/keranjangs").then((res) => {
-        const keranjangs = res.data;
-        keranjangs.map(function (item) {
-          return axios
-            .delete(API_URL + "/keranjangs/" + item.id)
-            .then((res) => console.log(res).catch((error) => console.log(error)));
-        });
-      });
+      this.props.history.push("/sukses")
     });
   };
 
