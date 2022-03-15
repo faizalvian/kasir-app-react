@@ -12,7 +12,9 @@ const ModalKeranjang = ({
   tambah,
   kurang,
   changeHandler,
-  handleSubmit
+  handleSubmit,
+  hapusPesanan,
+  totHarga
 }) => {
   if (keranjangDetails) {
     return (
@@ -31,7 +33,7 @@ const ModalKeranjang = ({
               <Form.Label>Total Harga: </Form.Label>
               <p>
                 <strong>
-                  Rp. {keranjangDetails.total_harga.toLocaleString("id-ID")}
+                  Rp. {totHarga.toLocaleString("id-ID")}
                 </strong>
               </p>
             </Form.Group>
@@ -69,7 +71,7 @@ const ModalKeranjang = ({
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="outline-danger" onClick={handleClose}>
+          <Button variant="outline-danger" onClick={() => hapusPesanan(keranjangDetails.id)}>
             <FontAwesomeIcon icon={faTrash} /> Hapus Pesanan
           </Button>
           <Button variant="primary" onClick={handleSubmit}>

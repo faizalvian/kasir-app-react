@@ -3,6 +3,10 @@ import { Badge, Col, ListGroup, Row } from "react-bootstrap";
 import ModalKeranjang from "./ModalKeranjang";
 import TotalBayar from "./TotalBayar";
 
+import { API_URL } from "../utils/constants";
+import axios from "axios";
+import Swal from "sweetalert2";
+
 export default class Keranjang extends Component {
   constructor(props) {
     super(props);
@@ -12,6 +16,7 @@ export default class Keranjang extends Component {
       keranjangDetails: false,
       jumlah: 0,
       keterangan: "",
+      totHarga: 0,
     };
   }
 
@@ -20,7 +25,8 @@ export default class Keranjang extends Component {
       showModal: true,
       keranjangDetails: menuKeranjang,
       jumlah: menuKeranjang.jumlah,
-      keterangan: menuKeranjang.keterangan
+      keterangan: menuKeranjang.keterangan,
+      totHarga: menuKeranjang.total_harga
     });
   };
 
@@ -32,14 +38,16 @@ export default class Keranjang extends Component {
 
   tambah = () => {
     this.setState({
-      jumlah: this.state.jumlah+1
+      jumlah: this.state.jumlah+1,
+      totHarga: this.state.keranjangDetails.product.harga*(this.state.jumlah+1)
     })
   }
 
   kurang = () => {
     if (this.state.jumlah !== 1) {
       this.setState({
-        jumlah: this.state.jumlah-1
+        jumlah: this.state.jumlah-1,
+        totHarga: this.state.keranjangDetails.product.harga*(this.state.jumlah - 1)
       })
     }
   }
@@ -52,8 +60,23 @@ export default class Keranjang extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
+    this.handleClose()
+    const data = {
+      jumlah: this.state.jumlah,
+      total_harga: this.state.totHarga,
+      product: this.state.keranjangDetails.product,
+      keterangan: this.state.keterangan
+    };
+    axios.put(API_URL + "/keranjangs/"+this.state.keranjangDetails.id, data).then((res) => {
+      Swal.fire("Sip!", "Pesanan diupdate.", "success");
+    });
+  }
 
-    console.log(this.state.keterangan)
+  hapusPesanan = (id) => {
+    this.handleClose()
+    axios.delete(API_URL + "/keranjangs/"+id).then((res) => {
+      Swal.fire("Sip!", "Pesanan " +this.state.keranjangDetails.product.nama+ " dihapus.", "error");
+    });
   }
 
   render() {
@@ -92,7 +115,7 @@ export default class Keranjang extends Component {
                 </Row>
               </ListGroup.Item>
             ))}
-            <ModalKeranjang handleClose={this.handleClose} {...this.state} tambah={this.tambah} kurang={this.kurang} changeHandler={this.changeHandler} handleSubmit={this.handleSubmit}/>
+            <ModalKeranjang handleClose={this.handleClose} {...this.state} tambah={this.tambah} kurang={this.kurang} changeHandler={this.changeHandler} handleSubmit={this.handleSubmit} hapusPesanan={this.hapusPesanan}/>
           </ListGroup>
         )}
         <TotalBayar keranjangs={keranjangs} {...this.props} />
